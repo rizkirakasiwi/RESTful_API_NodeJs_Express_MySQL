@@ -28,5 +28,7 @@ the listen port is: 3030
 you can call (GET) this RESTful API like this
 
 >localhost:3030/api/mahasiswa
+or
 >localhost:3030/api/transaksi
+or
 >localhost:3030/api/akun
