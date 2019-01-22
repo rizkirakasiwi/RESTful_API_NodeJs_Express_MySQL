@@ -22,11 +22,11 @@ function getConnection(){
 }
 
 // get data
-router.get('/api/bank', (req, res)=>{
+router.get('/api/akun', (req, res)=>{
   //call connector
   const connection = getConnection()
   //make query
-  const queryCommand = "select * from bank"
+  const queryCommand = "select * from akun"
   // execute query
   connection.query(queryCommand, (err, rows, fields) =>{
     // check the error
@@ -41,15 +41,15 @@ router.get('/api/bank', (req, res)=>{
 })
 
 // search data
-router.get('/api/bank/:noRekening', (req, res)=>{
+router.get('/api/akun/:kodeAkun', (req, res)=>{
   //call connection
   const connection = getConnection()
   // make query
-  const queryCommand = "select * from bank where noRekening = ?"
+  const queryCommand = "select * from akun where kodeAkun = ?"
   // call parameters who input by user
-  const noRekening = req.params.noRekening
+  const kodeAkun = req.params.kodeAkun
   // execute query
-  connection.query(queryCommand, [noRekening], (err, rows, fields)=>{
+  connection.query(queryCommand, [kodeAkun], (err, rows, fields)=>{
     // check the error
     if(err){
       console.log("error with "+err);
@@ -65,10 +65,10 @@ router.get('/api/bank/:noRekening', (req, res)=>{
 function validasiInput(body){
   // make array for data
   const schema = {
-    //no rekening should integer
-    noRekening: Joi.number().integer(),
-    //saldo should string and min length of word is 3 characther and not null
+    kodeAkun: Joi.number().integer(),
     saldo: Joi.number().integer().min(3).required(),
+    namaAkun: Joi.string().min(3).required(),
+    kodeRekening: Joi.number().integer().min(3).required()
   }
 
   // validation data with schema rule
@@ -76,7 +76,7 @@ function validasiInput(body){
 }
 
 //make post method
-router.post('/api/bank', (req, res)=>{
+router.post('/api/akun', (req, res)=>{
 
   //call validasiInput function
   const {error} = validasiInput(req.body)
@@ -89,17 +89,19 @@ router.post('/api/bank', (req, res)=>{
   const values = []
   //push data
   values.push(
-    req.body.noRekening,
-    req.body.saldo
+    req.body.kodeAkun,
+    req.body.saldo,
+    req.body.namaAkun,
+    req.body.kodeRekening
   )
 
-  const noRekening = req.body.noRekening
+  const kodeAkun = req.body.kodeAkun
 
   //insert command (SQL) with parameter
-  const queryCommand = "insert into bank (noRekening, saldo) values (?); select * from bank where noRekening = ?"
+  const queryCommand = "insert into akun (kodeAkun, saldo, namaAkun, kodeRekening) values (?); select * from akun where kodeAkun = ?"
 
   // execute sql command
-  connection.query(queryCommand, [values, noRekening], (err, results, fields)=>{
+  connection.query(queryCommand, [values, kodeAkun], (err, results, fields)=>{
     //if this command have error when execute query with parameter
     if(err){
       // show error in log
@@ -116,7 +118,7 @@ router.post('/api/bank', (req, res)=>{
 
 // make update method
 // with parameter in url
-router.put('/api/bank/:noRekening', (req, res)=>{
+router.put('/api/akun/:kodeAkun', (req, res)=>{
   // check data input with validasiInput rule
   const {error} = validasiInput(req.body)
   if(error) return res.status(400).send(error.details[0].message)
@@ -124,13 +126,15 @@ router.put('/api/bank/:noRekening', (req, res)=>{
   // call connection
   const connection = getConnection()
   // make update queryCommand
-  const queryCommand = "update bank set Saldo = ? where noRekening = ?;select * from bank where noRekening = ?"
+  const queryCommand = "update akun set Saldo = ?, namaAkun = ?, kodeRekening = ? where kodeAkun = ?;select * from akun where kodeAkun = ?"
   // make parameter
-  const noRekening = req.params.noRekening
+  const kodeAkun = req.params.kodeAkun
   const saldo = req.body.saldo
+  const namaAkun = req.body.namaAkun
+  const kodeRekening = req.body.kodeRekening
 
   // execute query
-  connection.query(queryCommand, [saldo, noRekening, noRekening], (err, results, fields)=>{
+  connection.query(queryCommand, [kodeAkun, saldo, namaAkun, kodeRekening, kodeAkun], (err, results, fields)=>{
     // if query error
     if(err){
       // show in log
@@ -146,15 +150,15 @@ router.put('/api/bank/:noRekening', (req, res)=>{
 })
 
 // make delete method
-router.delete('/api/bank/:noRekening', (req, res)=>{
+router.delete('/api/akun/:kodeAkun', (req, res)=>{
     // call connection
     const connection = getConnection()
     // call nim parameter
-    const noRekening = req.params.noRekening
+    const kodeAkun = req.params.kodeAkun
     // make query
-    const querySelect = "select * from bank where noRekening = ?; delete from bank where noRekening = ?"
+    const querySelect = "select * from akun where kodeAkun = ?; delete from akun where kodeAkun = ?"
     // execute query
-    connection.query(querySelect, [noRekening, noRekening], (err, results, fields)=>{
+    connection.query(querySelect, [kodeAkun, kodeAkun], (err, results, fields)=>{
       // check error
       if(err){
         console.log(err);

@@ -10,7 +10,7 @@ const routerMahasiswa = require('./router/mahasiswa.js')
 app.use(routerMahasiswa)
 
 // call bank.js
-const routerBank = require('./router/bank.js')
+const routerBank = require('./router/akun.js')
 app.use(routerBank)
 
 // call transaksi.js

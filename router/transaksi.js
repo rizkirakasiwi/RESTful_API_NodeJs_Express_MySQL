@@ -65,16 +65,14 @@ router.get('/api/transaksi/:kodeTransaksi', (req, res)=>{
 function validasiInput(body){
   // make array for data
   const schema = {
-    //kodeTransaksi should integer
-    kodeTransaksi: Joi.noTransaksi().integer(),
-    //jenisTransaksi should string and min length of word is 3 characther and not null
-    jenisTransaksi: Joi.string().min(3).required(),
-    //tanggal should string and min length of word is 8 characther and not null
-    tanggalTransaksi: Joi.string().min(8).required(),
-    //bayar should string and min length of word is 3 characther and not null
-    bayar: Joi.string().min(3).required(),
-    //jurusan should string and min length of word is 8 characther and not null
-    nim: Joi.string().min(8).required()
+    kodeAkun : Joi.number().integer().min(3).required(),
+    tanggalTransaksi : Joi.string().min(10).required(),
+    jumlahBayar : Joi.number().integer().min(3).required(),
+    waktuTransaksi : Joi.string().min(8).required(),
+    statusTransaksi : Joi.string().min(3).required(),
+    nim : Joi.number().integer().min(3).required(),
+    jenisPembayaran : Joi.string().min(3).required(),
+    kodeTransaksi : Joi.number().integer()
   }
 
   // validation data with schema rule
@@ -95,17 +93,20 @@ router.post('/api/transaksi', (req, res)=>{
   const values = []
   //push data
   values.push(
-    req.body.kodeTransaksi,
-    req.body.jenisTransaksi,
+    req.body.kodeAkun,
     req.body.tanggalTransaksi,
-    req.body.bayar,
-    req.body.nim
+    req.body.jumlahBayar,
+    req.body.waktuTransaksi,
+    req.body.statusTransaksi,
+    req.body.nim,
+    req.body.jenisPembayaran,
+    req.body.kodeTransaksi
   )
 
   const kodeTransaksi = req.body.kodeTransaksi
 
   //insert command (SQL) with parameter
-  const queryCommand = "insert into transaksi (kodeTransaksi, jenisTransaksi, tanggalTransaksi, bayar, nim) values (?); select * from mahasiswa where nim = ?"
+  const queryCommand = "insert into transaksi (kodeAkun, tanggalTransaksi, jumlahBayar, waktuTransaksi, statusTransaksi, nim, jenisPembayaran, kodeTransaksi) values (?); select * from transaksi where kodeTransaksi = ?"
 
   // execute sql command
   connection.query(queryCommand, [values, kodeTransaksi], (err, results, fields)=>{
@@ -123,6 +124,7 @@ router.post('/api/transaksi', (req, res)=>{
   })
 })
 
+
 // make update method
 // with parameter in url
 router.put('/api/transaksi/:kodeTransaksi', (req, res)=>{
@@ -133,16 +135,19 @@ router.put('/api/transaksi/:kodeTransaksi', (req, res)=>{
   // call connection
   const connection = getConnection()
   // make update queryCommand
-  const queryCommand = "update transaksi set jenisTransaksi = ?, tanggalTransaksi = ?, bayar = ?, nim = ? where kodeTransaksi = ?;select * from transaksi where kodeTransaksi = ?"
+  const queryCommand = "update transaksi set kodeAkun = ?, tanggalTransaksi = ?, jumlahBayar = ?, waktuTransaksi = ?, statusTransaksi = ?, nim =?, jenisPembayaran = ? where kodeTransaksi = ?;select * from transaksi where kodeTransaksi = ?"
   // make parameter
-  const kodeTransaksi = req.params.kodeTransaksi
-  const jenisTransaksi = req.body.jenisTransaksi
-  const tanggalTransaksi =req.body.tanggalTransaksi
-  const bayar = req.body.bayar
+  const kodeAkun = req.body.kodeAkun
+  const tanggalTransaksi = req.body.tanggalTransaksi
+  const jumlahBayar = req.body.jumlahBayar
+  const waktuTransaksi = req.body.waktuTransaksi
+  const statusTransaksi = req.body.statusTransaksi
   const nim = req.body.nim
+  const jenisPembayaran = req.body.jenisPembayaran
+  const kodeTransaksi = req.params.kodeTransaksi
 
   // execute query
-  connection.query(queryCommand, [jenisTransaksi, tanggalTransaksi, bayar, nim, kodeTransaksi, kodeTransaksi], (err, results, fields)=>{
+  connection.query(queryCommand, [kodeAkun, tanggalTransaksi, jumlahBayar, waktuTransaksi, statusTransaksi, nim, jenisPembayaran, kodeTransaksi, kodeTransaksi], (err, results, fields)=>{
     // if query error
     if(err){
       // show in log

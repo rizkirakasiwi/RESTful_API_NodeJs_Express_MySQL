@@ -69,10 +69,8 @@ function validasiInput(body){
     nim: Joi.number().integer(),
     //nama should string and min length of word is 3 characther and not null
     nama: Joi.string().min(3).required(),
-    //semester should string and min length of word is 8 characther and not null
-    semester: Joi.string().min(8).required(),
     //jurusan should string and min length of word is 8 characther and not null
-    jurusan: Joi.string().min(8).required()
+    jurusan: Joi.string().min(2).required()
   }
 
   // validation data with schema rule
@@ -95,14 +93,13 @@ router.post('/api/mahasiswa', (req, res)=>{
   values.push(
     req.body.nim,
     req.body.nama,
-    req.body.semester,
     req.body.jurusan
   )
 
   const nim = req.body.nim
 
   //insert command (SQL) with parameter
-  const queryCommand = "insert into mahasiswa (nim, nama, semester, jurusan) values (?); select * from mahasiswa where nim = ?"
+  const queryCommand = "insert into mahasiswa (nim, nama, jurusan) values (?); select * from mahasiswa where nim = ?"
 
   // execute sql command
   connection.query(queryCommand, [values, nim], (err, results, fields)=>{
@@ -130,15 +127,14 @@ router.put('/api/mahasiswa/:nim', (req, res)=>{
   // call connection
   const connection = getConnection()
   // make update queryCommand
-  const queryCommand = "update mahasiswa set nama = ?, semester = ?, jurusan = ? where nim = ?;select * from mahasiswa where nim = ?"
+  const queryCommand = "update mahasiswa set nama = ?, jurusan = ? where nim = ?;select * from mahasiswa where nim = ?"
   // make parameter
   const nim = req.params.nim
   const nama = req.body.nama
-  const semester = req.body.semester
   const jurusan = req.body.jurusan
 
   // execute query
-  connection.query(queryCommand, [nama, semester, jurusan, nim, nim], (err, results, fields)=>{
+  connection.query(queryCommand, [nama, jurusan, nim, nim], (err, results, fields)=>{
     // if query error
     if(err){
       // show in log
