@@ -1,4 +1,4 @@
-# RESTful_API_NodeJs_Express_MySQL
+# RESTful_API_NodeJs_Express_MySQL (Multiple SQL Command)
 RESTful API with NodeJs, Express and MySQL
 
 the module who you need to run this RESTful API
