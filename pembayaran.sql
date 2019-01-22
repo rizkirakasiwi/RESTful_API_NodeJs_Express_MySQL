@@ -38,7 +38,7 @@ CREATE TABLE `akun` (
 
 LOCK TABLES `akun` WRITE;
 /*!40000 ALTER TABLE `akun` DISABLE KEYS */;
-INSERT INTO `akun` VALUES (991,5000000,'Rizki Rakasiwi',111),(992,3000000,'Samsul Arifin',112);
+INSERT INTO `akun` VALUES (991,5000000,'Myname1',111),(992,3000000,'Myname2',112);
 /*!40000 ALTER TABLE `akun` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `mahasiswa` (
 
 LOCK TABLES `mahasiswa` WRITE;
 /*!40000 ALTER TABLE `mahasiswa` DISABLE KEYS */;
-INSERT INTO `mahasiswa` VALUES (17184065,'Rizki Rakasiwi','Teknik Informatika'),(17184066,'Samsul Arifin','Teknik Informatika');
+INSERT INTO `mahasiswa` VALUES (17184065,'Myname1','Teknik Informatika'),(17184066,'Myname2','Teknik Informatika');
 /*!40000 ALTER TABLE `mahasiswa` ENABLE KEYS */;
 UNLOCK TABLES;
 
