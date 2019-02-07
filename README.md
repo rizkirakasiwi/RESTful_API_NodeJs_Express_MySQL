@@ -1,7 +1,6 @@
 # RESTful_API_NodeJs_Express_MySQL (Multiple SQL Command)
 RESTful API with NodeJs, Express and MySQL
-
-the module who you need to run this RESTful API
+first you should write your firebase admin key to this code and this is the module who you need to run this RESTful API
 
 install express
 
